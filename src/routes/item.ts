@@ -1,15 +1,15 @@
-import { Router } from "express";
+import { Router, Request, Response } from "express";
 import fetch from "node-fetch";
 
 import { ResponseItem, ResponseItemId } from "../types";
 
 const router = Router();
 
-router.get("/", (req, res) => {
+router.get("/", (req: Request, res: Response) => {
 	const query = req.query.q;
 
 	fetch(`https://api.mercadolibre.com/sites/MLA/search?q=${query}&limit=4`)
-		.then((response: any) => response.json())
+		.then((response) => response.json())
 		.then((data: any) => {
 			const filters = data.filters;
 			const foundFilter =
@@ -46,11 +46,12 @@ router.get("/", (req, res) => {
 		});
 });
 
-router.get("/:id", async (req, res) => {
+router.get("/:id", async (req: Request, res: Response) => {
 	const id = req.params.id;
 
 	const translate: { [key: string]: string } = {
 		new: "Nuevo",
+		used: "Usado"
 	};
 	try {
 		// Realizamos la primera consulta a la API de Mercado Libre
